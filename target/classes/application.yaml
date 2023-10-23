@@ -1,0 +1,10 @@
+spring:
+  data:
+    mongodb:
+      username: aaronbujatin
+      password: 5YESr0MSHEc6oXzP
+      host: localhost
+      port: 27017
+      database: mydb
+      authentication-database: admin
+      uri: mongodb+srv://aaronbujatin:5YESr0MSHEc6oXzP@cluster0.wiqknaz.mongodb.net/?retryWrites=true&w=majority
