@@ -11,7 +11,7 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document("users_test")
+@Document("schedules")
 public class Schedule {
 
     @Id

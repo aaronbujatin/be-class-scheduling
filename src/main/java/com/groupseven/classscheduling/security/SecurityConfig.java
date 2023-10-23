@@ -33,7 +33,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authentication -> authentication
                         .requestMatchers("/api/v1/users/signup", "/api/v1/login").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+                .logout(s -> s.invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/home"));
 
         return httpSecurity.build();
     }
