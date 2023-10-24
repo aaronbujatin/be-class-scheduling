@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
@@ -19,5 +21,13 @@ public class UserController {
     public ResponseEntity<User> saveUser(@RequestBody User user){
         return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
     }
+
+    @GetMapping()
+    public ResponseEntity<User> getUserDetails(Principal principal){
+        String username = principal.getName();
+        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+    }
+
+
 
 }
