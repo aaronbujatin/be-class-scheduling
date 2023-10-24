@@ -1,11 +1,15 @@
 package com.groupseven.classscheduling.security;
 
+import com.groupseven.classscheduling.jwt.JwtAuthenticationEntryPoint;
+import com.groupseven.classscheduling.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,33 +29,34 @@ public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+                .exceptionHandling(entryPoint -> entryPoint.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authentication -> authentication
-                        .requestMatchers("/api/v1/users/signup", "/api/v1/login").permitAll()
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/endpoint/public").permitAll()
                         .anyRequest().authenticated())
-                .httpBasic(Customizer.withDefaults())
-                .logout(s -> s.invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/home"));
-
+                .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-
-        return daoAuthenticationProvider;
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter authenticationFilter() {
+        return new JwtAuthenticationFilter();
     }
 }
