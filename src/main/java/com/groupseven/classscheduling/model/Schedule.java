@@ -23,5 +23,6 @@ public class Schedule {
     private int roomNumber;
     private String days;
     private String course;
-    private LocalTime time;
+    private LocalTime startTime;
+    private LocalTime endTime;
 }
