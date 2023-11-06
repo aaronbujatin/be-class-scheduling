@@ -6,7 +6,8 @@ public class JwtUtils {
     //public static final long EXPIRATION_TIME = 864_000_000; // 10 days
     public static final long EXPIRATION_TIME = 36_000_000; // 10 hours
     //public static final long EXPIRATION_TIME = 3_600_000;// 1 hour
-    //public static final long EXPIRATION_TIME = 600_000; // 10 minutes
+//    public static final long EXPIRATION_TIME = 600_000; // 10 minutes
+//    public static final long EXPIRATION_TIME = 150_000; // 2:30 minutes
     public static final String BEARER_TOKEN_PREFIX = "Bearer ";
     public static final String BASIC_TOKEN_PREFIX =  "Basic ";
     public static final String AUTH_HEADER = "Authorization";

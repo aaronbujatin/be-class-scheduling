@@ -28,6 +28,10 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> isAuthenticated(){
+        return new ResponseEntity<>("User authenticated", HttpStatus.OK);
+    }
 
 
 }
