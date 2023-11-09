@@ -17,8 +17,6 @@ public class ScheduleService {
         return scheduleRepository.save(schedule);
     }
 
-
-
     public List<Schedule> getAllScheduleByUsernameAndCourse(String instructorName, String course){
         return scheduleRepository.findByInstructorNameAndCourse(instructorName, course);
     }
